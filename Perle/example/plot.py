@@ -1,0 +1,86 @@
+import os
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+import practicalities as ofs
+
+outfolder = ofs.getoutfolder()
+os.chdir("/Users/JeffreyPrince/Documents/GitHub/BP/out/"+outfolder)
+
+frame = []
+InsideDropped = []
+NotDropped = []
+OutsideDropped = []
+
+
+## BAR PLOT:
+file = os.path.join(os.getcwd(),"comments.txt")
+with open(file,'r') as f:
+        for i,l in enumerate(f.readlines()):
+            if i > 0: #Skips header
+                scale = l.split(";")
+                frame.append(float(scale[0]))
+                InsideDropped.append(float(scale[1]))
+                NotDropped.append(float(scale[2]))                
+                OutsideDropped.append(float(scale[3])) 
+
+
+plt.plot(frame,InsideDropped, label = "inside")
+plt.plot(frame,NotDropped, label = "not dropped")
+plt.plot(frame,OutsideDropped, label = "outside")
+plt.legend()
+plt.show()
+
+
+
+
+
+
+
+
+###BARPLOT:
+# import os
+
+# import numpy as np
+# import matplotlib.pyplot as plt
+
+# import practicalities as ofs
+
+# outfolder = ofs.getoutfolder()
+# os.chdir("/Users/JeffreyPrince/Documents/GitHub/BP/out/"+outfolder)
+
+# frame = []
+# InsideDropped = []
+# NotDropped = []
+# OutsideDropped = []
+
+
+# ## BAR PLOT:
+# file = os.path.join(os.getcwd(),"comments.txt")
+# with open(file,'r') as f:
+#         for i,l in enumerate(f.readlines()):
+#             if i > 0: #Skips header
+#                 scale = l.split(";")
+#                 frame.append(float(scale[0]))
+                
+#                 if (float(scale[1]) > float(0.1)):
+#                     InsideDropped.append(float(scale[1]))
+#                 if (float(scale[2]) > float(0.1)):
+#                     NotDropped.append(float(scale[2]))                
+#                 if (float(scale[3]) > float(0.1)):
+#                     OutsideDropped.append(float(scale[3]))                 
+                                       
+
+# fig = plt.figure()
+# # Bar plot:
+# number_list = [len(InsideDropped), len(NotDropped), len(OutsideDropped)]
+# max_value = max(number_list)
+# max_index = number_list.index(max_value)
+
+# ax = fig.add_axes([0,0,1,1])
+# langs = ['In', 'Not', 'Out']
+# students = [len(InsideDropped),len(NotDropped),len(OutsideDropped)]
+
+# ax.bar(langs,students)
+# plt.show()
