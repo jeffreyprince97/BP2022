@@ -7,7 +7,7 @@ import practicalities as ofs
 
 ### hvor mange frames behøves for at genkende øvelsen.
 # user inputs:
-ofs.setoutfolder('fails1perle.MOV')
+ofs.setoutfolder('IMG_0083.MOV')
 filename = ofs.getoutfolder()
 vidcap = cv2.VideoCapture('in/'+filename)
 framerate = 10 

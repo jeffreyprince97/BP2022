@@ -26,9 +26,9 @@ with open(file,'r') as f:
                 OutsideDropped.append(float(scale[3])) 
 
 
-plt.plot(frame,InsideDropped, label = "inside")
-plt.plot(frame,NotDropped, label = "not dropped")
-plt.plot(frame,OutsideDropped, label = "outside")
+plt.plot(frame,InsideDropped, label = "Inside Dropped")
+plt.plot(frame,NotDropped, label = "Not Dropped")
+plt.plot(frame,OutsideDropped, label = "Outside Dropped")
 plt.legend()
 plt.show()
 

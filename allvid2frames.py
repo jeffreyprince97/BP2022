@@ -1,4 +1,4 @@
-import cv2
+from cv2 import cv2
 import os
 import math
 
@@ -7,7 +7,7 @@ import math
 framerate = 10
 wd = '/Users/JeffreyPrince/Documents/GitHub/BP/'
 ###
-infolder = "in/ABLS2/"
+infolder = "in/perler/"
 
 for wd, dirs, files in os.walk(infolder, topdown=True):
     for d in files: # names in procedures
