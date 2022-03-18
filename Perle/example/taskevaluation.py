@@ -128,7 +128,7 @@ if __name__ == "__main__":
     output_list_NotDropped = []  
     output_list_OutsideDropped = []  
     
-    images_to_classify = glob.glob("*.jpg")[:]
+    images_to_classify = sorted(glob.glob("*.jpg"), key=os.path.getmtime)[:]
     model = TFModel(model_dir=model_dir)
     c = 0
     printbatches =-1
