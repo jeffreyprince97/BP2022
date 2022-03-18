@@ -157,13 +157,13 @@ if __name__ == "__main__":
                     output_list_OutsideDropped.append(p["confidence"])
                     
 
-
+            if i == 10: print(i)
             
             if i % 10 == 0:   
                 print("print to file", i,printbatches)
                 with open(os.path.join(os.getcwd(), "comments.txt"),'a') as f:
                     for kk, p in enumerate(output_list_InsideDropped):
-                        f.write("%s;%s;%s;%s;\n" %(kk+i,output_list_InsideDropped[kk],output_list_NotDropped[kk],output_list_OutsideDropped[kk]))
+                        f.write("%s;%s;%s;%s;\n" %(i,output_list_InsideDropped[kk],output_list_NotDropped[kk],output_list_OutsideDropped[kk]))
                
                     output_list_InsideDropped = [] 
                     output_list_NotDropped = []

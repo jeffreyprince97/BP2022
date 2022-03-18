@@ -11,7 +11,7 @@ ofs.getoutfolder()
 # IMG_0321,IMG_0323
 filename = ofs.getoutfolder()
 vidcap = cv2.VideoCapture('in/'+filename)
-framerate = 10 # IKKE FRAMERATE: skipper n-1 billeder hver gang den gemmer 1.
+framerate = 60 # IKKE FRAMERATE: skipper n-1 billeder hver gang den gemmer 1.
 ###
 
 success,image = vidcap.read()
@@ -20,6 +20,7 @@ count = 0
 while success:
     frameId = vidcap.get(1)
     success,image = vidcap.read()
+    # if count == 100: break
 
     if not os.path.exists("out/"+filename):
         os.mkdir("out/"+filename)

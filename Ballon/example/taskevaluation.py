@@ -99,7 +99,8 @@ class TFModel:
         confs = results["Confidences"]
         labels = self.signature.get("classes").get("Label")
         output = [dict(zip(out_keys, group)) for group in zip(labels, confs)]
-        sorted_output = {"predictions": sorted(output, key=lambda k: k["confidence"], reverse=True)}
+        sorted_output = {"predictions": sorted(output, key=lambda k: k["confidence"], reverse=False)}
+        # sorted_output = {"predictions": sorted(output, key=lambda k: k["confidence"], reverse=True)}
         return sorted_output
 
 
@@ -117,25 +118,28 @@ if __name__ == "__main__":
     model_dir = os.path.join(os.getcwd(), "..")
     
     outfolder = ofs.getoutfolder()
-    img_dir = "/Users/JeffreyPrince/Documents/GitHub/BP/out/"+outfolder 
-
+    # img_dir = "/Users/JeffreyPrince/Documents/GitHub/BP/out/"+outfolder 
+    task = ofs.gettask()
+    img_dir = "/Users/JeffreyPrince/Documents/GitHub/BP/"+task+os.sep+outfolder+os.sep
+    
     
     os.chdir(img_dir)
     
     
     all_outputs = {} #dict
-    output_list_InsideDropped = []  
-    output_list_NotDropped = []  
-    output_list_OutsideDropped = []  
+    output_list_Fail = []  
+    output_list_Pass = []  
     
-    images_to_classify = glob.glob("*.jpg")[:]
+    
+    images_to_classify = sorted(glob.glob(img_dir+"*.jpg"), key=os.path.getmtime)[:]
+    model_dir = os.path.join(os.getcwd(),"..")
     model = TFModel(model_dir=model_dir)
     c = 0
-    printbatches =-1
+    printbatches =0
 
     with open(os.path.join(os.getcwd(), "comments.txt"),'w') as f:
         
-        f.write("%s;%s;%s;%s;\n" %("frame","Inside Dropped","Not Dropped","Outside Dropped"))
+        f.write("%s;%s;%s;\n" %("frame","Pass","Fail"))
 
         
     for i, image_path in enumerate(images_to_classify):
@@ -144,30 +148,29 @@ if __name__ == "__main__":
             image = Image.open(image_path)
             
             outputs = model.predict(image)
+            
             # print(f"Predicted: {outputs}")
             for p in outputs["predictions"]:
                 #print(p)
-                if p["label"] == "InsideDropped":
-                    output_list_InsideDropped.append(p["confidence"])
+                if p["label"] == "Pass":
+                    output_list_Pass.append(p["confidence"])
                     
-                elif p["label"] == "NotDropped":
-                    output_list_NotDropped.append(p["confidence"])
-                    
-                elif p["label"] == "OutsideDropped":
-                    output_list_OutsideDropped.append(p["confidence"])
+                elif p["label"] == "Fail":
+                    output_list_Fail.append(p["confidence"])
+       
                     
 
-            if i == 10: print(i)
+
             
-            if i % 10 == 0:   
+            if i % 50 == 0:   
                 print("print to file", i,printbatches)
                 with open(os.path.join(os.getcwd(), "comments.txt"),'a') as f:
-                    for kk, p in enumerate(output_list_InsideDropped):
-                        f.write("%s;%s;%s;%s;\n" %(kk+i,output_list_InsideDropped[kk],output_list_NotDropped[kk],output_list_OutsideDropped[kk]))
+                    for kk, p in enumerate(output_list_Fail):
+                        f.write("%s;%s;%s;\n" %(kk,output_list_Pass[kk],output_list_Fail[kk]))
                
-                    output_list_InsideDropped = [] 
-                    output_list_NotDropped = []
-                    output_list_OutsideDropped = [] 
+                    output_list_Fail = [] 
+                    output_list_Pass = []
+                    
                     printbatches+=1
             
 
