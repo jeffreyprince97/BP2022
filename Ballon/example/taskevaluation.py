@@ -118,9 +118,7 @@ if __name__ == "__main__":
     model_dir = os.path.join(os.getcwd(), "..")
     
     outfolder = ofs.getoutfolder()
-    # img_dir = "/Users/JeffreyPrince/Documents/GitHub/BP/out/"+outfolder 
-    task = ofs.gettask()
-    img_dir = "/Users/JeffreyPrince/Documents/GitHub/BP/"+task+os.sep+outfolder+os.sep
+    img_dir = "/Users/JeffreyPrince/Documents/GitHub/BP/out/"+outfolder 
     
     
     os.chdir(img_dir)
@@ -131,8 +129,7 @@ if __name__ == "__main__":
     output_list_Pass = []  
     
     
-    images_to_classify = sorted(glob.glob(img_dir+"*.jpg"), key=os.path.getmtime)[:]
-    model_dir = os.path.join(os.getcwd(),"..")
+    images_to_classify = sorted(glob.glob("*.jpg"), key=os.path.getmtime)[:]
     model = TFModel(model_dir=model_dir)
     c = 0
     printbatches =0

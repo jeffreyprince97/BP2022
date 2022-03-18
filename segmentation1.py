@@ -7,7 +7,7 @@ import practicalities as ofs
 
 ### hvor mange frames behøves for at genkende øvelsen. umiddelbart er 10 helt fint.
 # user inputs:
-ofs.setoutfolder('perlertest.MOV')
+ofs.setoutfolder('IMG_0544.MOV')
 filename = ofs.getoutfolder()
 vidcap = cv2.VideoCapture('in/'+filename)
 framerate = 10 
