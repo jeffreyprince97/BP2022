@@ -11,7 +11,7 @@ ofs.getoutfolder()
 # IMG_0321,IMG_0323
 filename = ofs.getoutfolder()
 vidcap = cv2.VideoCapture('in/'+filename)
-framerate = 60 # IKKE FRAMERATE: skipper n-1 billeder hver gang den gemmer 1.
+framerate = 10 # IKKE FRAMERATE: skipper n-1 billeder hver gang den gemmer 1.
 ###
 
 success,image = vidcap.read()
