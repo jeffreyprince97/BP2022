@@ -5,20 +5,22 @@ import math
 
 import practicalities as ofs
 
-### hvor mange frames behøves for at genkende øvelsen. umiddelbart er 10 helt fint.
+# reverse playback
+# https://stackoverflow.com/questions/11260042/reverse-video-playback-in-opencv
+
+###
 # user inputs:
-ofs.setoutfolder('IMG_0379.MOV')
+ofs.getoutfolder()
+# IMG_0321,IMG_0323
 filename = ofs.getoutfolder()
 vidcap = cv2.VideoCapture('in/'+filename)
-framerate = 10
+framerate = 10 
 ###
 
 success,image = vidcap.read()
 
 count = 0
 while success:
-    if count == 10:
-        break
     frameId = vidcap.get(1)
     success,image = vidcap.read()
 

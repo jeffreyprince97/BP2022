@@ -13,11 +13,15 @@ subprocess.call(['python','taskpredicter.py'])
 os.chdir("..")
 os.chdir("..")
 
+task = ofs.gettask()
 #segment entire video.
-subprocess.call(['python','segmentation2.py'])
+if(task == "Skum"):
+    subprocess.call(['python','segmentationskum.py'])
+else:
+    subprocess.call(['python','segmentation2.py'])
 
 #making sure the correct model is being applied.
-task = ofs.gettask()
+
 os.chdir(os.getcwd()+os.sep+task+"/example/")
 
 
