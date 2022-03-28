@@ -7,7 +7,9 @@ import practicalities as ofs
 # segment small part of video for task recognition.
 subprocess.call(['python','segmentation1.py'])
 os.chdir(os.path.join(os.getcwd()+"/taskdetection/example/"))
+# analysis + write output
 subprocess.call(['python','imageanalysis.py'])
+# read output + settask()
 subprocess.call(['python','taskpredicter.py'])
 
 os.chdir("..")

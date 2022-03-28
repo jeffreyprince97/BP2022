@@ -157,8 +157,6 @@ if __name__ == "__main__":
        
                     
 
-            if (printbatches > 2):
-                break
             
             if i % 10 == 0:   
                 print("print to file", i,printbatches)
