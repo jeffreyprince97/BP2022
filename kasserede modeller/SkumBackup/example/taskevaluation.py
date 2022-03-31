@@ -155,6 +155,10 @@ if __name__ == "__main__":
                 elif p["label"] == "Fail":
                     output_list_Fail.append(p["confidence"])
        
+                    
+
+            if (printbatches > 2):
+                break
             
             if i % 10 == 0:   
                 print("print to file", i,printbatches)

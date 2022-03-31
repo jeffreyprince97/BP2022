@@ -12,9 +12,9 @@ ofs.getoutfolder()
 filename = ofs.getoutfolder()
 vidcap = cv2.VideoCapture('in/'+filename)
 
-#check framerate
-length = int(vidcap.get(cv2.CAP_PROP_FRAME_COUNT))
-print(length/int(1800))
+# #check framerate
+# length = int(vidcap.get(cv2.CAP_PROP_FRAME_COUNT))
+# print(length/int(1800))
 framerate = 10 # IKKE FRAMERATE: skipper n-1 billeder hver gang den gemmer 1.
 ###
 
