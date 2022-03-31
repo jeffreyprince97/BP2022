@@ -130,7 +130,7 @@ if __name__ == "__main__":
     output_list_Skum = []  
     output_list_Vat = []  
     
-    images_to_classify = glob.glob("*.jpg")[:]
+    images_to_classify = sorted(glob.glob("*.jpg"), key=os.path.getmtime)[:]
     model = TFModel(model_dir=model_dir)
     c = 0
     printbatches =-1
