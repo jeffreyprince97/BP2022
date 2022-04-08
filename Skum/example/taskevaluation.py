@@ -127,17 +127,17 @@ if __name__ == "__main__":
     all_outputs = {} #dict
     output_list_Fail = []  
     output_list_Pass = []  
-    output_list_Notdone = []  
+    output_list_Invalid = []  
     
     
-    images_to_classify = sorted(glob.glob("*.jpg"), key=os.path.getmtime, reverse=True)[:]
+    images_to_classify = sorted(glob.glob("*.jpg"), key=os.path.getmtime)[:]
     model = TFModel(model_dir=model_dir)
     c = 0
     printbatches =0
 
     with open(os.path.join(os.getcwd(), "comments.txt"),'w') as f:
         
-        f.write("%s;%s;%s;%s;\n" %("frame","Pass","Fail","Notdone"))
+        f.write("%s;%s;%s;%s;\n" %("frame","Pass","Fail","Invalid"))
 
         
     for i, image_path in enumerate(images_to_classify):
@@ -156,17 +156,18 @@ if __name__ == "__main__":
                 elif p["label"] == "Fail":
                     output_list_Fail.append(p["confidence"])
        
-                elif p["label"] == "Notdone":
-                    output_list_Notdone.append(p["confidence"])
+                elif p["label"] == "Invalid":
+                    output_list_Invalid.append(p["confidence"])
     
             if i % 10 == 0:   
                 print("print to file", i,printbatches)
                 with open(os.path.join(os.getcwd(), "comments.txt"),'a') as f:
                     for kk, p in enumerate(output_list_Fail):
-                        f.write("%s;%s;%s;%s;\n" %(kk+i,output_list_Pass[kk],output_list_Fail[kk],output_list_Notdone[kk]))
+                        f.write("%s;%s;%s;%s;\n" %(kk+i,output_list_Pass[kk],output_list_Fail[kk],output_list_Invalid[kk]))
                
                     output_list_Fail = [] 
                     output_list_Pass = []
+                    output_list_Invalid = []
                     
                     printbatches+=1
             
