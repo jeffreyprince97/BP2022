@@ -7,7 +7,7 @@ import math
 framerate = 5
 wd = '/Users/JeffreyPrince/Documents/GitHub/BP/'
 ###
-infolder = "in/skumvids/"
+infolder = "in/vat/"
 
 vidcount = 1
 for wd, dirs, files in os.walk(infolder, topdown=True):
