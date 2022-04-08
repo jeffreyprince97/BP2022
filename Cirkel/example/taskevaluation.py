@@ -125,8 +125,9 @@ if __name__ == "__main__":
     
     
     all_outputs = {} #dict
-    output_list_Fail = []  
     output_list_Pass = []  
+    output_list_Fail = []      
+    output_list_Invalid = []  
     
     
     images_to_classify = sorted(glob.glob("*.jpg"), key=os.path.getmtime)[:]
@@ -136,7 +137,7 @@ if __name__ == "__main__":
 
     with open(os.path.join(os.getcwd(), "comments.txt"),'w') as f:
         
-        f.write("%s;%s;%s;\n" %("frame","Pass","Fail"))
+        f.write("%s;%s;%s;%s;\n" %("frame","Pass","Fail","Invalid"))
 
         
     for i, image_path in enumerate(images_to_classify):
@@ -154,6 +155,10 @@ if __name__ == "__main__":
                     
                 elif p["label"] == "Fail":
                     output_list_Fail.append(p["confidence"])
+                
+                elif p["label"] == "Invalid":
+                    output_list_Invalid.append(p["confidence"])
+                
        
                     
 
@@ -163,10 +168,11 @@ if __name__ == "__main__":
                 print("print to file", i,printbatches)
                 with open(os.path.join(os.getcwd(), "comments.txt"),'a') as f:
                     for kk, p in enumerate(output_list_Fail):
-                        f.write("%s;%s;%s;\n" %(kk+i,output_list_Pass[kk],output_list_Fail[kk]))
+                        f.write("%s;%s;%s;%s;\n" %(kk+i,output_list_Pass[kk],output_list_Fail[kk],output_list_Invalid[kk]))
                
-                    output_list_Fail = [] 
                     output_list_Pass = []
+                    output_list_Fail = [] 
+                    output_list_Invalid = []
                     
                     printbatches+=1
             

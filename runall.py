@@ -19,6 +19,8 @@ task = ofs.gettask()
 #segment entire video.
 if(task == "Skum"):
     subprocess.call(['python','segmentationskum.py'])
+elif(task == "Cirkel"):
+    subprocess.call(['python','segmentationcirkel.py'])
 else:
     subprocess.call(['python','segmentation2.py'])
 
