@@ -15,11 +15,11 @@ ofs.getoutfolder()
 filename = ofs.getoutfolder()
 vidcap = cv2.VideoCapture('in/'+filename)
 length = int(vidcap.get(cv2.CAP_PROP_FRAME_COUNT))
-framerate = 1 
+framerate = 5
 ###
 
 # set start frame from total frame count - x
-start = length-int(300)
+start = length-int(600)
 vidcap.set(cv2.CAP_PROP_POS_FRAMES, start)
 #
 

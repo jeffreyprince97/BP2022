@@ -25,7 +25,7 @@ vidcap.set(cv2.CAP_PROP_POS_FRAMES, start)
 
 success,image = vidcap.read()
 
-count = 0
+count = 1
 while success:
     frameId = vidcap.get(1)
     success,image = vidcap.read()

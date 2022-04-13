@@ -20,7 +20,7 @@ framerate = 10 # IKKE FRAMERATE: skipper n-1 billeder hver gang den gemmer 1.
 
 success,image = vidcap.read()
 
-count = 0
+count = 1
 while success:
     frameId = vidcap.get(1)
     success,image = vidcap.read()
