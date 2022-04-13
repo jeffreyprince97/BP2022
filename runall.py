@@ -21,6 +21,8 @@ if(task == "Skum"):
     subprocess.call(['python','segmentationskum.py'])
 elif(task == "Cirkel"):
     subprocess.call(['python','segmentationcirkel.py'])
+elif(task == "Vat"):
+    subprocess.call(['python','segmentationvat.py'])
 else:
     subprocess.call(['python','segmentation2.py'])
 
