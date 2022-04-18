@@ -14,8 +14,8 @@ Done = []
 
 
 
-## BAR PLOT:
-file = os.path.join(os.getcwd(),"comments.txt")
+
+file = os.path.join(os.getcwd(),"output.txt")
 with open(file,'r') as f:
         for i,l in enumerate(f.readlines()):
             if i > 0: #Skips header

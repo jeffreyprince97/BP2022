@@ -146,27 +146,57 @@ if __name__ == "__main__":
             image = Image.open(image_path)
             
             outputs = model.predict(image)
+
+            # prediction er altid gemt i sidste position ([1] i dette tilfælde))
+            # 
+            outputlist = list(outputs.values())
+            # print("output list: ")
+            # print(outputlist)
+
+            # se om innerlist 1 kan bruges til noget, og få label-værdi ud som variabel.
+            innerlist1 = list(outputlist[0])
+
+            predictedlabel = innerlist1[1]
             
-            # print(f"Predicted: {outputs}")
-            for p in outputs["predictions"]:
-                #print(p)
-                if p["label"] == "Done":
-                    output_list_Done.append(p["confidence"])
+            # print(predictedlabel)
+            
+            ################ !!!
+            label = predictedlabel.get('label')
+            ################ !!!
+            if not os.path.exists(label+os.sep):
+                os.mkdir(label+os.sep)
+            else:
+                image.save(label+os.sep+image_path,'JPEG')
+            
 
-                    # if not os.path.exists("done/"):
-                    #     os.mkdir("done/")
-                    # else:
-                    #     image.save("done/"+image_path,'JPEG')
-                    
-                    
-                elif p["label"] == "Invalid":
-                    output_list_Invalid.append(p["confidence"])
+            ## erstat print med save image, når koden virker.
+            # if 'label' in innerlist1[1] == 'Done':
+            #     print("yes, done")
 
-                    # if not os.path.exists("invalid/"):
-                    #     os.mkdir("invalid/")
-                    # else:
-                    #     image.save("invalid/"+image_path,'JPEG')
+            
+            
+            # with open(os.path.join(os.getcwd(), label, "predicts.txt"),'a') as f:
+            #     f.write("%s;%s\n" % (image_path,predictedlabel))
+
+            
+
+                for p in outputs["predictions"]:
+                    #print(p)
+                    if p["label"] == "Done":
+                        output_list_Done.append(p["confidence"])
+
                         
+                        
+                        
+                    elif p["label"] == "Invalid":
+                        output_list_Invalid.append(p["confidence"])
+                        
+                        # if not os.path.exists("invalid/"):
+                        #     os.mkdir("invalid/")
+                        # else:
+                        #     image.save("invalid/"+image_path,'JPEG')
+                    
+                    
 
                     
 
