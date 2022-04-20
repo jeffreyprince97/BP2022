@@ -1,14 +1,13 @@
-#  -------------------------------------------------------------
-#   Copyright (c) Microsoft Corporation.  All rights reserved.
-#  -------------------------------------------------------------
-"""
-Skeleton code showing how to load and run the TensorFlow SavedModel export package from Lobe.
-"""
 import argparse
 import os
 import json
 import numpy as np
 from threading import Lock
+import time
+import glob
+from PIL import Image
+
+import practicalities as ofs
 
 # printing only warnings and error messages
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "1"
@@ -28,7 +27,7 @@ class TFModel:
         self.model_dir = model_dir
         with open(os.path.join(model_dir, "signature.json"), "r") as f:
             self.signature = json.load(f)
-        self.model_file = "../" + self.signature.get("filename")
+        self.model_file = os.path.join(model_dir, self.signature.get("filename"))
         if not os.path.isfile(self.model_file):
             raise FileNotFoundError(f"Model file does not exist")
         self.inputs = self.signature.get("inputs")
@@ -101,22 +100,129 @@ class TFModel:
         confs = results["Confidences"]
         labels = self.signature.get("classes").get("Label")
         output = [dict(zip(out_keys, group)) for group in zip(labels, confs)]
-        sorted_output = {"predictions": sorted(output, key=lambda k: k["confidence"], reverse=True)}
+        sorted_output = {"predictions": sorted(output, key=lambda k: k["confidence"], reverse=False)}
+        # sorted_output = {"predictions": sorted(output, key=lambda k: k["confidence"], reverse=True)}
         return sorted_output
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Predict a label for an image.")
-    parser.add_argument("image", help="Path to your image file.")
-    args = parser.parse_args()
+    projectdir = '/Users/JeffreyPrince/Documents/GitHub/BP/step1tf/example/'
+    dirin = '/Users/JeffreyPrince/Documents/GitHub/BP/in/'
+    dirout = '/Users/JeffreyPrince/Documents/GitHub/BP/out/'
+    dirpredictsout = '/Users/JeffreyPrince/Documents/GitHub/BP/predictsout/'
+    # os.chdir(projectdir)
+    # parser = argparse.ArgumentParser(description="Predict a label for an image.")
+    # parser.add_argument("image", help="Path to your image file.")
+    # args = parser.parse_args()
     # Assume model is in the parent directory for this file
-    model_dir = os.path.join(os.getcwd(), "..")
 
-    if os.path.isfile(args.image):
-        image = Image.open(args.image)
-        model_dir = os.path.join(os.getcwd(), "..")
-        model = TFModel(model_dir=model_dir)
-        outputs = model.predict(image)
-        print(f"Predicted: {outputs}")
-    else:
-        print(f"Couldn't find image file {args.image}")
+    model_dir = os.path.join(os.getcwd(), "..")
+    
+    outfolder = ofs.getoutfolder()
+    img_dir = "/Users/JeffreyPrince/Documents/GitHub/BP/out/"+outfolder 
+    
+    
+    os.chdir(img_dir)
+    
+    
+    all_outputs = {} #dict
+    output_list_Invalid = []  
+    output_list_Done = []  
+    
+    
+    images_to_classify = sorted(glob.glob("*.jpg"), key=os.path.getmtime)[:]
+    model = TFModel(model_dir=model_dir)
+    c = 0
+    printbatches =0
+
+    with open(os.path.join(os.getcwd(), "output.txt"),'w') as f:
+        
+        f.write("%s;%s;%s;\n" %("frame","Done","Invalid"))
+
+        
+    for i, image_path in enumerate(images_to_classify):
+        try:
+            
+            image = Image.open(image_path)
+            
+            outputs = model.predict(image)
+
+            # prediction er altid gemt i sidste position ([1] i dette tilfælde))
+            # 
+            outputlist = list(outputs.values())
+            # print("output list: ")
+            # print(outputlist)
+
+            # se om innerlist 1 kan bruges til noget, og få label-værdi ud som variabel.
+            innerlist1 = list(outputlist[0])
+
+            predictedlabel = innerlist1[1]
+            
+            # print(predictedlabel)
+            
+            ################ !!!
+            label = predictedlabel.get('label')
+            ################ !!!
+            if not os.path.exists(label+os.sep):
+                os.mkdir(label+os.sep)
+            else:
+                image.save(label+os.sep+image_path,'JPEG')
+            
+
+            ## erstat print med save image, når koden virker.
+            # if 'label' in innerlist1[1] == 'Done':
+            #     print("yes, done")
+
+            
+            
+            # with open(os.path.join(os.getcwd(), label, "predicts.txt"),'a') as f:
+            #     f.write("%s;%s\n" % (image_path,predictedlabel))
+
+            
+
+                for p in outputs["predictions"]:
+                    #print(p)
+                    if p["label"] == "Done":
+                        output_list_Done.append(p["confidence"])
+
+                        
+                        
+                        
+                    elif p["label"] == "Invalid":
+                        output_list_Invalid.append(p["confidence"])
+                        
+                        # if not os.path.exists("invalid/"):
+                        #     os.mkdir("invalid/")
+                        # else:
+                        #     image.save("invalid/"+image_path,'JPEG')
+                    
+                    
+
+                    
+
+
+            # if i % 10 == 0:
+            if i % 10 == 0 and i!=0:   
+                print("print to file", i,printbatches)
+                # gem billede, evt getcwd + label == x - save image..., ellers prøv at gøre det i linje 153, 156.
+
+                with open(os.path.join(os.getcwd(), "output.txt"),'a') as f:
+                    for kk, p in enumerate(output_list_Invalid):
+                        # f.write("%s;%s;%s;\n" %(kk+i,output_list_Done[kk],output_list_Invalid[kk]))
+                        f.write("%s;%s;%s;\n" %(str(1+kk+10*printbatches),output_list_Done[kk],output_list_Invalid[kk]))
+                        
+               
+                    output_list_Invalid = [] 
+                    output_list_Done = []
+                    
+                    printbatches+=1
+            
+
+
+        except OSError:
+            pass
+
+
+
+
+

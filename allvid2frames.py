@@ -4,16 +4,16 @@ import math
 
 ###
 # user inputs:
-framerate = 5
+framerate = 10
 wd = '/Users/JeffreyPrince/Documents/GitHub/BP/'
 ###
-infolder = "in/vat/"
+infolder = "in/perle/"
 
 vidcount = 1
 for wd, dirs, files in os.walk(infolder, topdown=True):
     for d in files: # names in folders
         length = len(files)
-        if d.endswith('.mov'):
+        if d.endswith('.MOV'):
             
             filename = d
             vidcap = cv2.VideoCapture(infolder+filename)

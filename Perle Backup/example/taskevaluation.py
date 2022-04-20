@@ -1,14 +1,12 @@
-#  -------------------------------------------------------------
-#   Copyright (c) Microsoft Corporation.  All rights reserved.
-#  -------------------------------------------------------------
-"""
-Skeleton code showing how to load and run the TensorFlow SavedModel export package from Lobe.
-"""
 import argparse
 import os
 import json
 import numpy as np
 from threading import Lock
+import time
+import glob
+
+import practicalities as ofs
 
 # printing only warnings and error messages
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "1"
@@ -28,7 +26,7 @@ class TFModel:
         self.model_dir = model_dir
         with open(os.path.join(model_dir, "signature.json"), "r") as f:
             self.signature = json.load(f)
-        self.model_file = "../" + self.signature.get("filename")
+        self.model_file = os.path.join(model_dir, self.signature.get("filename"))
         if not os.path.isfile(self.model_file):
             raise FileNotFoundError(f"Model file does not exist")
         self.inputs = self.signature.get("inputs")
@@ -106,17 +104,109 @@ class TFModel:
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Predict a label for an image.")
-    parser.add_argument("image", help="Path to your image file.")
-    args = parser.parse_args()
+    projectdir = '/Users/JeffreyPrince/Documents/GitHub/BP/step1tf/example/'
+    dirin = '/Users/JeffreyPrince/Documents/GitHub/BP/in/'
+    dirout = '/Users/JeffreyPrince/Documents/GitHub/BP/out/'
+    dirpredictsout = '/Users/JeffreyPrince/Documents/GitHub/BP/predictsout/'
+    # os.chdir(projectdir)
+    # parser = argparse.ArgumentParser(description="Predict a label for an image.")
+    # parser.add_argument("image", help="Path to your image file.")
+    # args = parser.parse_args()
     # Assume model is in the parent directory for this file
-    model_dir = os.path.join(os.getcwd(), "..")
 
-    if os.path.isfile(args.image):
-        image = Image.open(args.image)
-        model_dir = os.path.join(os.getcwd(), "..")
-        model = TFModel(model_dir=model_dir)
-        outputs = model.predict(image)
-        print(f"Predicted: {outputs}")
-    else:
-        print(f"Couldn't find image file {args.image}")
+    model_dir = os.path.join(os.getcwd(), "..")
+    
+    outfolder = ofs.getoutfolder()
+    img_dir = "/Users/JeffreyPrince/Documents/GitHub/BP/out/"+outfolder 
+
+    
+    os.chdir(img_dir)
+    
+    
+    all_outputs = {} #dict
+    output_list_InsideDropped = []  
+    output_list_NotDropped = []  
+    output_list_OutsideDropped = []  
+    
+    images_to_classify = sorted(glob.glob("*.jpg"), key=os.path.getmtime)[:]
+    model = TFModel(model_dir=model_dir)
+    c = 0
+    printbatches =0
+
+    with open(os.path.join(os.getcwd(), "comments.txt"),'w') as f:
+        
+        f.write("%s;%s;%s;%s;\n" %("frame","Inside Dropped","Not Dropped","Outside Dropped"))
+
+        
+    for i, image_path in enumerate(images_to_classify):
+        try:
+            
+            image = Image.open(image_path)
+            
+            outputs = model.predict(image)
+            # print(f"Predicted: {outputs}")
+
+            outputlist = list(outputs.values())
+            # print("output list: ")
+            # print(outputlist)
+
+            # se om innerlist 1 kan bruges til noget, og få label-værdi ud som variabel.
+            innerlist1 = list(outputlist[0])
+            predictedlabel0 = innerlist1[0]
+            # predictedlabel1 = innerlist1[1]
+            # predictedlabel2 = innerlist1[2]
+            # print("predictedlabel0")
+            # print(predictedlabel0)
+            # print("predictedlabel1")
+            # print(predictedlabel1)
+            # print("predictedlabel2")
+            # print(predictedlabel2)
+            
+            # print(predictedlabel)
+            
+            ################ !!!
+            label = predictedlabel0.get('label')
+            ################ !!!
+            if not os.path.exists(label+os.sep):
+                os.mkdir(label+os.sep)
+            else:
+                image.save(label+os.sep+image_path,'JPEG')
+
+
+
+
+
+            for p in outputs["predictions"]:
+                #print(p)
+                if p["label"] == "Inside dropped":
+                    output_list_InsideDropped.append(p["confidence"])
+                    
+                elif p["label"] == "Not dropped":
+                    output_list_NotDropped.append(p["confidence"])
+                    
+                elif p["label"] == "Outside dropped":
+                    output_list_OutsideDropped.append(p["confidence"])
+                    
+
+
+            
+            if i % 10 == 0 and i != 0:   
+                print("print to file", i,printbatches)
+                with open(os.path.join(os.getcwd(), "comments.txt"),'a') as f:
+                    for kk, p in enumerate(output_list_InsideDropped):
+                        f.write("%s;%s;%s;%s;\n" %(str(1+kk+10*printbatches),output_list_InsideDropped[kk],output_list_NotDropped[kk],output_list_OutsideDropped[kk]))
+               
+                    output_list_InsideDropped = [] 
+                    output_list_NotDropped = []
+                    output_list_OutsideDropped = [] 
+                    printbatches+=1
+            
+
+
+        except OSError:
+            pass
+
+
+
+
+
