@@ -7,7 +7,7 @@ import practicalities as ofs
 
 ### hvor mange frames behøves for at genkende øvelsen. umiddelbart er 10 helt fint.
 # user inputs:
-ofs.setoutfolder('IMG_0521.MOV')
+ofs.setoutfolder('IMG_0148.MOV')
 filename = ofs.getoutfolder()
 vidcap = cv2.VideoCapture('in/'+filename)
 framerate = 10
@@ -17,7 +17,7 @@ success,image = vidcap.read()
 
 count = 1
 while success:
-    if count == 11:
+    if count == 26:
         break
     frameId = vidcap.get(1)
     success,image = vidcap.read()

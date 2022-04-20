@@ -167,7 +167,7 @@ if __name__ == "__main__":
 
 
             
-            if i == 10: break    # stop after frame 10.
+            if i == 25: break    # stop after frame 10.
             
             if i % 1 == 0:             # ouput for every frame (until frame 10).
                 print("print to file", i,printbatches)
