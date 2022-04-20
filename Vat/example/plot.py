@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 
 import practicalities as ofs
 
+
 outfolder = ofs.getoutfolder()
 os.chdir("/Users/JeffreyPrince/Documents/GitHub/BP/out/"+outfolder)
 
@@ -13,7 +14,13 @@ Invalid = []
 Done = []
 
 
+# def runningMeanFast(x, N):
+#     return np.convolve(x, np.ones((N,))/N)[(N-1):]
 
+def moving_average(x, w):
+    return np.convolve(x, np.ones(w), 'valid') / w
+
+    
 
 file = os.path.join(os.getcwd(),"output.txt")
 with open(file,'r') as f:
@@ -24,22 +31,47 @@ with open(file,'r') as f:
                 Done.append(float(scale[1]))                
                 Invalid.append(float(scale[2]))
                 
-                
+#########
+# Running average:
+framearr = np.array(frame)
+Invalidarr = np.array(Invalid)
+Donearr = np.array(Done)
 
 
-plt.plot(frame,Invalid, label = "Invalid")
-plt.plot(frame,Done, label = "Done")
-plt.legend()
-plt.show()
+InvalidMean = moving_average(Invalidarr,12) # 2 sec average
+DoneMean = moving_average(Donearr,12) # 2 sec average
+
+
+# count = 1
+# for a in Invalidarr:
+#     InvalidMean.append(runningMeanFast(a,count))
+#     count += 1
+
+
+# DoneMean = []
+# count = 1
+# for a in Donearr:
+#     DoneMean.append(runningMeanFast(a,count))
+#     count += 1
+
+#########
+
+print(InvalidMean)
+
+
+# plt.plot(frame,InvalidMean, label = "Invalid")
+# plt.plot(frame,DoneMean, label = "Done")
+# plt.legend()
+# plt.show()
 
 
 plt.subplot(1,2,1).set_ylim([0, 1.1])
-plt.plot(Done, 'o')
+plt.plot(DoneMean, '-')
 plt.title("Done")
 plt.ylabel("Confidence")
 
 plt.subplot(1,2,2).set_ylim([0, 1.1])
-plt.plot(Invalid, 'o')
+plt.plot(InvalidMean, '-')
 plt.title("Invalid")
 plt.ylabel("Confidence")
 

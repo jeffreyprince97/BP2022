@@ -25,6 +25,24 @@ with open(file,'r') as f:
                 NotDropped.append(float(scale[2]))                
                 OutsideDropped.append(float(scale[3])) 
 
+#####
+# Running average:
+
+
+def moving_average(x, w):
+    return np.convolve(x, np.ones(w), 'valid') / w
+
+framearr = np.array(frame)
+InsideDroppedarr = np.array(InsideDropped)
+NotDroppedarr = np.array(NotDropped)
+OutsideDroppedarr = np.array(OutsideDropped)
+
+
+InsideDroppedMean = moving_average(InsideDroppedarr,12) # 4 sec average
+NotDroppedMean = moving_average(NotDroppedarr,12) # 4 sec average
+OutsideDroppedMean = moving_average(OutsideDroppedarr,12) # 4 sec average
+
+#####
 
 plt.plot(frame,InsideDropped, label = "inside")
 plt.plot(frame,NotDropped, label = "not dropped")
@@ -33,17 +51,17 @@ plt.legend()
 plt.show()
 
 plt.subplot(1,3,1).set_ylim([0, 1.1])
-plt.plot(InsideDropped, 'o')
+plt.plot(InsideDroppedMean, '-')
 plt.title("inside dropped")
 plt.ylabel("Confidence")
 
 plt.subplot(1,3,2).set_ylim([0, 1.1])
-plt.plot(NotDropped, 'o')
+plt.plot(NotDroppedMean, '-')
 plt.title("not dropped")
 plt.ylabel("Confidence")
 
 plt.subplot(1,3,3).set_ylim([0, 1.1])
-plt.plot(OutsideDropped, 'o')
+plt.plot(OutsideDroppedMean, '-')
 plt.title("outside")
 plt.ylabel("Confidence")
 

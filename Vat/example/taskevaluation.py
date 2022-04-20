@@ -148,6 +148,7 @@ if __name__ == "__main__":
             outputs = model.predict(image)
 
             # prediction er altid gemt i sidste position ([1] i dette tilfælde))
+            # det er på første position hvis reverse = True (linje 103)
             # 
             outputlist = list(outputs.values())
             # print("output list: ")
