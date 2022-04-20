@@ -131,7 +131,7 @@ if __name__ == "__main__":
     images_to_classify = sorted(glob.glob("*.jpg"), key=os.path.getmtime)[:]
     model = TFModel(model_dir=model_dir)
     c = 0
-    printbatches =-1
+    printbatches =0
 
     with open(os.path.join(os.getcwd(), "comments.txt"),'w') as f:
         
@@ -145,6 +145,37 @@ if __name__ == "__main__":
             
             outputs = model.predict(image)
             # print(f"Predicted: {outputs}")
+
+            outputlist = list(outputs.values())
+            # print("output list: ")
+            # print(outputlist)
+
+            # se om innerlist 1 kan bruges til noget, og få label-værdi ud som variabel.
+            innerlist1 = list(outputlist[0])
+            predictedlabel0 = innerlist1[0]
+            # predictedlabel1 = innerlist1[1]
+            # predictedlabel2 = innerlist1[2]
+            # print("predictedlabel0")
+            # print(predictedlabel0)
+            # print("predictedlabel1")
+            # print(predictedlabel1)
+            # print("predictedlabel2")
+            # print(predictedlabel2)
+            
+            # print(predictedlabel)
+            
+            ################ !!!
+            label = predictedlabel0.get('label')
+            ################ !!!
+            if not os.path.exists(label+os.sep):
+                os.mkdir(label+os.sep)
+            else:
+                image.save(label+os.sep+image_path,'JPEG')
+
+
+
+
+
             for p in outputs["predictions"]:
                 #print(p)
                 if p["label"] == "Inside dropped":
@@ -159,11 +190,11 @@ if __name__ == "__main__":
 
 
             
-            if i % 10 == 0:   
+            if i % 10 == 0 and i != 0:   
                 print("print to file", i,printbatches)
                 with open(os.path.join(os.getcwd(), "comments.txt"),'a') as f:
                     for kk, p in enumerate(output_list_InsideDropped):
-                        f.write("%s;%s;%s;%s;\n" %(kk+i,output_list_InsideDropped[kk],output_list_NotDropped[kk],output_list_OutsideDropped[kk]))
+                        f.write("%s;%s;%s;%s;\n" %(str(1+kk+10*printbatches),output_list_InsideDropped[kk],output_list_NotDropped[kk],output_list_OutsideDropped[kk]))
                
                     output_list_InsideDropped = [] 
                     output_list_NotDropped = []
