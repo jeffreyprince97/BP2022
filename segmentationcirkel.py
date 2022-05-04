@@ -17,9 +17,10 @@ vidcap = cv2.VideoCapture('in/'+filename)
 length = int(vidcap.get(cv2.CAP_PROP_FRAME_COUNT))
 framerate = 1 
 ###
+fps = int(vidcap.get(cv2.CAP_PROP_FPS))
 
-# set start frame from total frame count - x
-start = length-int(300)
+# set start frame from total frame count - 10 sec
+start = length-int(10*fps)
 vidcap.set(cv2.CAP_PROP_POS_FRAMES, start)
 #
 
