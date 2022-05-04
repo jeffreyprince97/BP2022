@@ -144,29 +144,15 @@ if __name__ == "__main__":
             image = Image.open(image_path)
             
             outputs = model.predict(image)
-            # print(f"Predicted: {outputs}")
+            
+
 
             outputlist = list(outputs.values())
-            # print("output list: ")
-            # print(outputlist)
-
-            # se om innerlist 1 kan bruges til noget, og få label-værdi ud som variabel.
             innerlist1 = list(outputlist[0])
             predictedlabel0 = innerlist1[0]
-            # predictedlabel1 = innerlist1[1]
-            # predictedlabel2 = innerlist1[2]
-            # print("predictedlabel0")
-            # print(predictedlabel0)
-            # print("predictedlabel1")
-            # print(predictedlabel1)
-            # print("predictedlabel2")
-            # print(predictedlabel2)
             
-            # print(predictedlabel)
-            
-            ################ !!!
             label = predictedlabel0.get('label')
-            ################ !!!
+            
             if not os.path.exists(label+os.sep):
                 os.mkdir(label+os.sep)
             else:

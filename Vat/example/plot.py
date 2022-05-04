@@ -40,30 +40,7 @@ Donearr = np.array(Done)
 
 InvalidMean = moving_average(Invalidarr,12) # 2 sec average
 DoneMean = moving_average(Donearr,12) # 2 sec average
-
-
-# count = 1
-# for a in Invalidarr:
-#     InvalidMean.append(runningMeanFast(a,count))
-#     count += 1
-
-
-# DoneMean = []
-# count = 1
-# for a in Donearr:
-#     DoneMean.append(runningMeanFast(a,count))
-#     count += 1
-
 #########
-
-print(InvalidMean)
-
-
-# plt.plot(frame,InvalidMean, label = "Invalid")
-# plt.plot(frame,DoneMean, label = "Done")
-# plt.legend()
-# plt.show()
-
 
 plt.subplot(1,2,1).set_ylim([0, 1.1])
 plt.plot(DoneMean, '-')
@@ -77,4 +54,12 @@ plt.ylabel("Confidence")
 
 
 plt.show()
+
+# plt.plot(frame,InvalidMean, label = "Invalid")
+# plt.plot(frame,DoneMean, label = "Done")
+# plt.legend()
+# plt.show()
+
+
+
 

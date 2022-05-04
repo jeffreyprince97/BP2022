@@ -104,11 +104,6 @@ class TFModel:
 
 
 if __name__ == "__main__":
-    projectdir = '/Users/JeffreyPrince/Documents/GitHub/BP/step1tf/example/'
-    dirin = '/Users/JeffreyPrince/Documents/GitHub/BP/in/'
-    dirout = '/Users/JeffreyPrince/Documents/GitHub/BP/out/'
-    dirpredictsout = '/Users/JeffreyPrince/Documents/GitHub/BP/predictsout/'
-    # os.chdir(projectdir)
     # parser = argparse.ArgumentParser(description="Predict a label for an image.")
     # parser.add_argument("image", help="Path to your image file.")
     # args = parser.parse_args()
@@ -119,23 +114,21 @@ if __name__ == "__main__":
     outfolder = ofs.getoutfolder()
     img_dir = "/Users/JeffreyPrince/Documents/GitHub/BP/out/"+outfolder 
 
-    
     os.chdir(img_dir)
-    
-    
-    all_outputs = {} #dict
-    output_list_Ballon = []  
-    output_list_Cirkel = []  
-    output_list_Perle = []  
-    output_list_Skum = []  
-    output_list_Vat = []  
     
     images_to_classify = sorted(glob.glob("*.jpg"), key=os.path.getmtime)[:]
     model = TFModel(model_dir=model_dir)
     c = 0
     printbatches =-1
 
-    with open(os.path.join(os.getcwd(), "comments.txt"),'w') as f:
+    all_outputs = {} #dict
+    output_list_Ballon = []  
+    output_list_Cirkel = []  
+    output_list_Perle = []  
+    output_list_Skum = []  
+    output_list_Vat = []  
+
+    with open(os.path.join(os.getcwd(), "output.txt"),'w') as f:
         
         f.write("%s;%s;%s;%s;%s;%s;\n" %("frame","Ballon","Cirkel","Perle","Skum", "Vat"))
 
@@ -143,13 +136,11 @@ if __name__ == "__main__":
     for i, image_path in enumerate(images_to_classify):
         try:
     
-            
             image = Image.open(image_path)
-            
             outputs = model.predict(image)
-            # print(f"Predicted: {outputs}")
+            
             for p in outputs["predictions"]:
-                #print(p)
+
                 if p["label"] == "Ballon":
                     output_list_Ballon.append(p["confidence"])
                     
@@ -164,17 +155,16 @@ if __name__ == "__main__":
                     
                 elif p["label"] == "Vat":
                     output_list_Vat.append(p["confidence"])
-
-
             
-            if i == 25: break    # stop after frame 10.
+            if i == 25: break   # stop after frame 25.
             
-            if i % 1 == 0:             # ouput for every frame (until frame 10).
+            if i % 1 == 0:      # ouput for every frame.
                 print("print to file", i,printbatches)
-                with open(os.path.join(os.getcwd(), "comments.txt"),'a') as f:
+                with open(os.path.join(os.getcwd(), "output.txt"),'a') as f:
                     for kk, p in enumerate(output_list_Ballon):
-                        # f.write("%s;%s;%s;%s;%s;%s;\n" %(kk+i,output_list_Ballon[kk],output_list_Cirkel[kk],output_list_Perle[kk],output_list_Skum[kk],output_list_Vat[kk]))
-                        f.write("%s;%s;%s;%s;%s;%s;\n" %(i,output_list_Ballon[kk],output_list_Cirkel[kk],output_list_Perle[kk],output_list_Skum[kk],output_list_Vat[kk]))
+                        f.write("%s;%s;%s;%s;%s;%s;\n" %(i,output_list_Ballon[kk],
+                        output_list_Cirkel[kk],output_list_Perle[kk],
+                        output_list_Skum[kk],output_list_Vat[kk]))
                
                     output_list_Ballon = [] 
                     output_list_Cirkel = []
@@ -183,41 +173,5 @@ if __name__ == "__main__":
                     output_list_Vat = [] 
                     printbatches+=1
 
-                    # all_outputs[str(image_path)] = outputs['predictions'][0]
-                    # print(json.dumps(all_outputs, indent = 4))
-            
-            
-            # print("Output finished and saved to: "+dirpredictsout)
-
-            # with open(os.path.join(os.getcwd(), "predictsout/comments.txt"), 'w') as file:
-            #     # print(json.dumps(all_outputs, indent = 4))
-            #     file.write(json.dumps(all_outputs, indent = 4))
-
-
         except OSError:
             pass
-
-    # with open(os.path.join(os.getcwd(), "predictsout/comments.txt"), 'w') as file:
-    
-    # newlist = sorted(all_outputs)
-    # with open(os.path.join(os.getcwd(), "comments.txt"),'a') as f:
-    #     f.write(str(newlist))
-    #     f.write("\n"+str(len(newlist)))
-   
-   
-   
-    # print(all_outputs)
-    # print("BALLON \n")
-    # print(output_list_Ballon)
-    # print("CIRKEL \n")
-    # print(output_list_Cirkel)
-    # print("PERLE \n")
-    # print(output_list_Perle)
-    # print("SKUMBALLON \n")
-    # print(output_list_Skumballon)
-    # print("VAT \n")
-    # print(output_list_Vat)
-
-
-
-

@@ -17,7 +17,7 @@ Vat = []
 
 
 ## BAR PLOT:
-file = os.path.join(os.getcwd(),"comments.txt")
+file = os.path.join(os.getcwd(),"output.txt")
 with open(file,'r') as f:
         for i,l in enumerate(f.readlines()):
             if i > 0: #Skips header
@@ -34,20 +34,13 @@ with open(file,'r') as f:
                 if (float(scale[5]) > float(0.1)):
                     Vat.append(float(scale[5])) 
 
-                                       
-
-fig = plt.figure()
-
-# fig.suptitle(outfolder) 
-# viser filens navn, men det er ikke så hensigtsmæssigt, 
-# hvis den hedder noget med dato og tid fra optagelsestidspunkt.
+# fig = plt.figure()
 
 # Prediction:
 number_list = [len(Ballon), len(Cirkel), len(Perle), len(Skum), len(Vat)]
 max_value = max(number_list)
 max_index = number_list.index(max_value)
 
-# kan erstattes med funktioner, der kører specifikke lobe models for øvelserne.
 if (max_index == 0):
     ofs.settask('Ballon')
     print(ofs.gettask())
@@ -63,6 +56,8 @@ elif (max_index == 3):
 elif (max_index == 4):
     ofs.settask('Vat')
     print(ofs.gettask())
+
+    
 
 # plot:
 # ax = fig.add_axes([0,0,1,1])
