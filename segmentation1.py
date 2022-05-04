@@ -7,12 +7,15 @@ import practicalities as ofs
 
 ### hvor mange frames behøves for at genkende øvelsen. umiddelbart er 10 helt fint.
 # user inputs:
-ofs.setoutfolder('IMG_0145.MOV')
+ofs.setoutfolder('IMG_0133.MOV')
 filename = ofs.getoutfolder()
 vidcap = cv2.VideoCapture('in/'+filename)
 
 fps = int(vidcap.get(cv2.CAP_PROP_FPS))
-print(fps)
+length = int(vidcap.get(cv2.CAP_PROP_FRAME_COUNT))
+time = str(length/fps)
+ofs.settime(time)
+print(time)
 
 framerate = 10
 ###

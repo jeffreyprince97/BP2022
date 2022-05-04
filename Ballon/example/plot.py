@@ -46,6 +46,11 @@ FailMean = moving_average(Failarr,12) # 2 sec average
 # plt.legend()
 # plt.show()
 
+timespent = float(timespent)
+score = float(600-timespent)
+
+plt.suptitle("Score: "+str(round(score,2)))
+
 
 plt.subplot(1,2,1).set_ylim([0, 1.1])
 plt.plot(PassMean, '-')

@@ -45,6 +45,11 @@ InvalidMean = moving_average(Invalidarr,24) # 2 sec average
 DoneMean = moving_average(Donearr,24) # 2 sec average
 #########
 
+timespent = float(timespent)
+score = float(600-timespent)
+
+plt.suptitle("Score: "+str(round(score,2)))
+
 plt.subplot(1,2,1).set_ylim([0, 1.1])
 plt.plot(DoneMean, '-')
 plt.title("Done")

@@ -45,6 +45,11 @@ OutsideDroppedMean = moving_average(OutsideDroppedarr,12) # 4 sec average
 
 #####
 
+timespent = float(timespent)
+score = float(600-timespent)
+
+plt.suptitle("Score: "+str(round(score,2)))
+
 plt.plot(frame,InsideDropped, label = "inside")
 plt.plot(frame,NotDropped, label = "not dropped")
 plt.plot(frame,OutsideDropped, label = "outside")
