@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import practicalities as ofs
 
 outfolder = ofs.getoutfolder()
+timespent = ofs.gettime()
 os.chdir("/Users/JeffreyPrince/Documents/GitHub/BP/out/"+outfolder)
 
 frame = []
@@ -51,12 +52,15 @@ Passarr = np.array(Pass)
 Failarr = np.array(Fail)
 Invalidarr = np.array(Invalid)
 
-PassMean = moving_average(Passarr,12) # 2 sec average
-FailMean = moving_average(Failarr,12) # 2 sec average
-InvalidMean = moving_average(Invalidarr,12) # 2 sec average
+PassMean = moving_average(Passarr,12) # 
+FailMean = moving_average(Failarr,12) #  
+InvalidMean = moving_average(Invalidarr,12) #  
 #########
 
+timespent = float(timespent)
+score = float(600-timespent)
 
+plt.suptitle("Score: "+str(round(score,2)))
 plt.subplot(1,3,1).set_ylim([0, 1.1])
 plt.plot(PassMean, '-')
 plt.title("pass")

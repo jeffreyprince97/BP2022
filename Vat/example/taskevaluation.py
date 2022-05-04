@@ -161,13 +161,14 @@ if __name__ == "__main__":
             
             # print(predictedlabel)
             
-            ################ !!!
-            label = predictedlabel.get('label')
-            ################ !!!
-            if not os.path.exists(label+os.sep):
-                os.mkdir(label+os.sep)
-            else:
-                image.save(label+os.sep+image_path,'JPEG')
+            ################ image save while analysing
+            # label = predictedlabel.get('label')
+            
+            # if not os.path.exists(label+os.sep):
+            #     os.mkdir(label+os.sep)
+            # else:
+            #     image.save(label+os.sep+image_path,'JPEG')
+            ################
             
 
             ## erstat print med save image, når koden virker.
@@ -181,16 +182,16 @@ if __name__ == "__main__":
 
             
 
-                for p in outputs["predictions"]:
-                    #print(p)
-                    if p["label"] == "Done":
-                        output_list_Done.append(p["confidence"])
+            for p in outputs["predictions"]:
+                #print(p)
+                if p["label"] == "Done":
+                    output_list_Done.append(p["confidence"])
 
-                        
-                        
-                        
-                    elif p["label"] == "Invalid":
-                        output_list_Invalid.append(p["confidence"])
+                    
+                    
+                    
+                elif p["label"] == "Invalid":
+                    output_list_Invalid.append(p["confidence"])
                         
                         # if not os.path.exists("invalid/"):
                         #     os.mkdir("invalid/")

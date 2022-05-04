@@ -15,7 +15,7 @@ ofs.getoutfolder()
 filename = ofs.getoutfolder()
 vidcap = cv2.VideoCapture('in/'+filename)
 length = int(vidcap.get(cv2.CAP_PROP_FRAME_COUNT))
-framerate = 5
+framerate = 2
 ###
 fps = int(vidcap.get(cv2.CAP_PROP_FPS))
 

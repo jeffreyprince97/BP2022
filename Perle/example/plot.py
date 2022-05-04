@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import practicalities as ofs
 
 outfolder = ofs.getoutfolder()
+timespent = ofs.gettime()
 os.chdir("/Users/JeffreyPrince/Documents/GitHub/BP/out/"+outfolder)
 
 frame = []

@@ -7,6 +7,7 @@ import practicalities as ofs
 
 
 outfolder = ofs.getoutfolder()
+timespent = ofs.gettime()
 os.chdir("/Users/JeffreyPrince/Documents/GitHub/BP/out/"+outfolder)
 
 frame = []
@@ -34,14 +35,14 @@ with open(file,'r') as f:
 def moving_average(x, w):
     return np.convolve(x, np.ones(w), 'valid') / w
 
-    
+
 framearr = np.array(frame)
 Invalidarr = np.array(Invalid)
 Donearr = np.array(Done)
 
 
-InvalidMean = moving_average(Invalidarr,12) # 2 sec average
-DoneMean = moving_average(Donearr,12) # 2 sec average
+InvalidMean = moving_average(Invalidarr,24) # 2 sec average
+DoneMean = moving_average(Donearr,24) # 2 sec average
 #########
 
 plt.subplot(1,2,1).set_ylim([0, 1.1])

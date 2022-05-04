@@ -20,4 +20,11 @@ def gettask():
         task = f.readlines()[0]
     return task
 
-
+def settime(time):
+    with open(myp +os.sep + "time.cames","w") as f:
+        f.write(time)
+    
+def gettime():    
+    with open(myp +os.sep + "time.cames","r") as f:
+        time = f.readlines()[0]
+    return time
