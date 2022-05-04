@@ -17,8 +17,6 @@ Done = []
 # def runningMeanFast(x, N):
 #     return np.convolve(x, np.ones((N,))/N)[(N-1):]
 
-def moving_average(x, w):
-    return np.convolve(x, np.ones(w), 'valid') / w
 
     
 
@@ -33,6 +31,10 @@ with open(file,'r') as f:
                 
 #########
 # Running average:
+def moving_average(x, w):
+    return np.convolve(x, np.ones(w), 'valid') / w
+
+    
 framearr = np.array(frame)
 Invalidarr = np.array(Invalid)
 Donearr = np.array(Done)

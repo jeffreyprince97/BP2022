@@ -24,22 +24,35 @@ with open(file,'r') as f:
                 Pass.append(float(scale[1]))                
                 Fail.append(float(scale[2]))
                 
-                
+
+#########
+# Running average:
+def moving_average(x, w):
+    return np.convolve(x, np.ones(w), 'valid') / w
+
+    
+framearr = np.array(frame)
+Passarr = np.array(Pass)
+Failarr = np.array(Fail)
+
+PassMean = moving_average(Passarr,12) # 2 sec average
+FailMean = moving_average(Failarr,12) # 2 sec average
+#########              
 
 
-plt.plot(frame,Fail, label = "fail")
-plt.plot(frame,Pass, label = "pass")
-plt.legend()
-plt.show()
+# plt.plot(frame,Fail, label = "fail")
+# plt.plot(frame,Pass, label = "pass")
+# plt.legend()
+# plt.show()
 
 
 plt.subplot(1,2,1).set_ylim([0, 1.1])
-plt.plot(Pass, 'o')
+plt.plot(PassMean, '-')
 plt.title("pass")
 plt.ylabel("Confidence")
 
 plt.subplot(1,2,2).set_ylim([0, 1.1])
-plt.plot(Fail, 'o')
+plt.plot(FailMean, '-')
 plt.title("fail")
 plt.ylabel("Confidence")
 

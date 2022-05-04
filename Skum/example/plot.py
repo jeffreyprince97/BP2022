@@ -27,20 +27,54 @@ with open(file,'r') as f:
                 # Invalid.append(float(scale[3]))
 
                                 
-                if (float(scale[1]) > float(0.75)):
-                    Pass.append(float(scale[1]))
+                # if (float(scale[1]) > float(0.75)):
+                Pass.append(float(scale[1]))
                 # else:
                 #     Pass.append(float(0))
-                if (float(scale[2]) > float(0.75)):
-                    Fail.append(float(scale[2]))          
+                # if (float(scale[2]) > float(0.75)):
+                Fail.append(float(scale[2]))          
                 # else:
                 #     Fail.append(float(0))                          
-                if (float(scale[3]) > float(0.1)):
-                    Invalid.append(float(scale[3]))  
+                # if (float(scale[3]) > float(0.1)):
+                Invalid.append(float(scale[3]))  
                 # else:
                 #     Invalid.append(float(scale[3])) 
                 
-                
+#########
+# Running average:
+def moving_average(x, w):
+    return np.convolve(x, np.ones(w), 'valid') / w
+
+    
+framearr = np.array(frame)
+Passarr = np.array(Pass)
+Failarr = np.array(Fail)
+Invalidarr = np.array(Invalid)
+
+PassMean = moving_average(Passarr,12) # 2 sec average
+FailMean = moving_average(Failarr,12) # 2 sec average
+InvalidMean = moving_average(Invalidarr,12) # 2 sec average
+#########
+
+
+plt.subplot(1,3,1).set_ylim([0, 1.1])
+plt.plot(PassMean, '-')
+plt.title("pass")
+plt.ylabel("Confidence")
+
+plt.subplot(1,3,2).set_ylim([0, 1.1])
+plt.plot(FailMean, '-')
+plt.title("fail")
+plt.ylabel("Confidence")
+
+plt.subplot(1,3,3).set_ylim([0, 1.1])
+plt.plot(InvalidMean, '-')
+plt.title("invalid")
+plt.ylabel("Confidence")
+
+plt.show()
+
+
 
 # length1 = len(Pass)
 # length2 = len(Fail)
@@ -59,24 +93,4 @@ with open(file,'r') as f:
 # plt.legend()
 # plt.show()
 
-
-plt.subplot(1,3,1).set_ylim([0, 1.1])
-plt.plot(Pass, 'o')
-plt.title("pass")
-plt.ylabel("Confidence")
-
-plt.subplot(1,3,2).set_ylim([0, 1.1])
-plt.plot(Fail, 'o')
-plt.title("fail")
-plt.ylabel("Confidence")
-
-plt.subplot(1,3,3).set_ylim([0, 1.1])
-plt.plot(Invalid, 'o')
-plt.title("invalid")
-plt.ylabel("Confidence")
-
-
-
-
-plt.show()
 

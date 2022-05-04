@@ -23,20 +23,54 @@ with open(file,'r') as f:
                 scale = l.split(";")
                 frame.append(float(scale[0]))
                                 
-                if (float(scale[1]) > float(0.25)):
-                    Pass.append(float(scale[1]))
+                # if (float(scale[1]) > float(0.25)):
+                Pass.append(float(scale[1]))
                 # else:
                 #     Pass.append(float(0))
-                if (float(scale[2]) > float(0.25)):
-                    Fail.append(float(scale[2]))          
+                # if (float(scale[2]) > float(0.25)):
+                Fail.append(float(scale[2]))          
                 # else:
                 #     Fail.append(float(0))                          
-                if (float(scale[3]) > float(0.1)):
-                    Invalid.append(float(scale[3]))  
+                # if (float(scale[3]) > float(0.1)):
+                Invalid.append(float(scale[3]))  
                 # else:
                 #     Invalid.append(float(scale[3])) 
                 
                 
+# Running average:
+
+def moving_average(x, w):
+    return np.convolve(x, np.ones(w), 'valid') / w
+
+
+framearr = np.array(frame)
+Invalidarr = np.array(Invalid)
+Passarr = np.array(Pass)
+Failarr = np.array(Fail)
+
+
+PassMean = moving_average(Passarr,12) # 2 sec average
+FailMean = moving_average(Failarr,12) # 2 sec average
+InvalidMean = moving_average(Invalidarr,12) # 2 sec average
+#########
+
+plt.subplot(1,3,1).set_ylim([0, 1.1])
+plt.plot(PassMean, '-')
+plt.title("Pass")
+plt.ylabel("Confidence")
+
+plt.subplot(1,3,2).set_ylim([0, 1.1])
+plt.plot(FailMean, '-')
+plt.title("Fail")
+plt.ylabel("Confidence")
+
+plt.subplot(1,3,3).set_ylim([0, 1.1])
+plt.plot(InvalidMean, '-')
+plt.title("Invalid")
+plt.ylabel("Confidence")
+
+
+plt.show()
                 
 
 
