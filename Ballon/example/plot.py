@@ -36,8 +36,8 @@ framearr = np.array(frame)
 Passarr = np.array(Pass)
 Failarr = np.array(Fail)
 
-PassMean = moving_average(Passarr,12) # 2 sec average
-FailMean = moving_average(Failarr,12) # 2 sec average
+PassMean = moving_average(Passarr,12) # "12": 2 sec average
+FailMean = moving_average(Failarr,12) 
 #########              
 
 
@@ -46,8 +46,17 @@ FailMean = moving_average(Failarr,12) # 2 sec average
 # plt.legend()
 # plt.show()
 
-timespent = float(timespent)
-score = float(600-timespent)
+# print(len(frame)/10)
+# print(sum(Fail))
+
+if sum(Fail) > 0.1*len(frame):
+    timespent = float(timespent)
+    score = float(540-timespent)
+    print("failed")
+else:
+    timespent = float(timespent)
+    score = float(600-timespent)
+    print("passed")
 
 plt.suptitle("Score: "+str(round(score,2)))
 
