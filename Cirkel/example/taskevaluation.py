@@ -168,7 +168,7 @@ if __name__ == "__main__":
                 print("print to file", i,printbatches)
                 with open(os.path.join(os.getcwd(), "comments.txt"),'a') as f:
                     for kk, p in enumerate(output_list_Fail):
-                        f.write("%s;%s;%s;%s;\n" %(kk+i,output_list_Pass[kk],output_list_Fail[kk],output_list_Invalid[kk]))
+                        f.write("%s;%s;%s;%s;\n" %(str(1+kk+10*printbatches),output_list_Pass[kk],output_list_Fail[kk],output_list_Invalid[kk]))
                
                     output_list_Pass = []
                     output_list_Fail = [] 
